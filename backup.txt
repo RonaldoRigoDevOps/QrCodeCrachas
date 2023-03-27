@@ -1,0 +1,15 @@
+$data .= "N:$fullname\r\n";
+
+$data .= "TITLE:$designation\r\n";
+
+$data .= "TEL;TYPE=WORK:$number\r\n";
+
+$data .= "EMAIL;TYPE=WORK:$email\r\n";
+
+$data .= "ORG:$company;$department\r\n";
+
+$data .= "ADR;TYPE=WORK:;;$street;$city;$state;$postalcode;$country\r\n";
+
+$data .= "URL:$website\r\n";
+
+$data .= "VERSION:4.0\r\n"; 

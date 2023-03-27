@@ -1,0 +1,18 @@
+{
+    "name": "ronaldo.r/qr-code-crachas",
+    "autoload": {
+        "psr-4": {
+            "RonaldoR\\QrCodeCrachas\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "RonaldoRigo",
+            "email": "ronaldo.rigo@outlook.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+		"chillerlan/php-qrcode": "dev-main#<commit_hash>"
+    }
+}
