@@ -34,6 +34,10 @@ $data .= "CATEGORIES:myContacts";
 $data .= "END:VCARD";
 
 // quick and simple:
-echo '<img src="'.(new QRCode)->render($data).'" alt="QR Code" />';
+
+ echo '<img src="'.(new QRCode)->render($data).'" alt="QR Code" />';
+//echo '<img src="'.(new QRCode)->render($data,'./svg/'.$fullname.'.svg' ).'" alt="QR Code" />';
+
+
 }
 ?>

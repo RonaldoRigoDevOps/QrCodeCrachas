@@ -22,7 +22,7 @@ include("environment.php");
 					<div class="card border-0 shadow">
 						<div class="card-body p-4">
 							<h2 class="mb-4 text-center">Gerar QR Code</h2>
-							<form action="gerar-qr_manual.php" method="post" class="validate-form">
+							<form action="gerar-qr-manual.php" method="post" class="validate-form">
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group mb-3 validate-input">
