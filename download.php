@@ -1,6 +1,6 @@
 <?php
 
-$file = './svg/Ronaldo_Rigo.svg';
+$file = './svg/Ronaldo Rigo.svg';
 
 if (file_exists($file)) {
     header('Content-Description: File Transfer');
