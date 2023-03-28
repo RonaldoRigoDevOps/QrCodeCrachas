@@ -1,8 +1,102 @@
+<?php
+
+// Define o local e nome do arquivo
+$target_file = "./db/csv/Lista.csv";
+
+// Verifica se o arquivo já existe
+if (file_exists($target_file)) {
+
+  $dados = array_map('str_getcsv', file($target_file));
+  array_walk($dados, function(&$a) use ($dados) {
+  $a = array_combine($dados[0], $a);
+});
+array_shift($dados);
+    
+} else {
+  echo "<script>alert('Não existe nenhum registro!');window.location.href='index.php';</script>";
+}
+/*
+$dados = array_map('str_getcsv', file($arquivo));
+array_walk($dados, function(&$a) use ($dados) {
+  $a = array_combine($dados[0], $a);
+});
+array_shift($dados);*/
+
+if (isset($_POST['download-qr']))
+{
+
+$caminho = './svg/auto/';
+
+    $zip = new ZipArchive();
+    $nomeZip = 'QrCode.zip';
+    if ($zip->open($nomeZip, ZipArchive::CREATE) !== TRUE) {
+        exit("Não foi possível criar o arquivo zip");
+    }
+    
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($caminho));
+    foreach ($iterator as $key=>$value) {
+        if (!$value->isDir()) {
+            $caminhoArquivo = $value->getRealPath();
+            $nomeArquivo = $value->getBasename();
+            $zip->addFile($caminhoArquivo, $nomeArquivo);
+        }
+    }
+    
+    $zip->close();
+    header('Content-Type: application/zip');
+    header('Content-disposition: attachment; filename=' . $nomeZip);
+    header('Content-Length: ' . filesize($nomeZip));
+    readfile($nomeZip);
+    unlink($nomeZip); // Exclui o arquivo zip após o download
+
+  }
+
+  if (isset($_POST['apagar-registros']))
+{
+  $csv_dir = './db/csv/';
+	$manual_dir = './svg/manual/';
+	$auto_dir = './svg/auto/';
+	
+	// Excluindo arquivos dentro do diretório ./db/csv/
+	if ($handle = opendir($csv_dir)) {
+	    while (false !== ($file = readdir($handle))) {
+	        if ($file != "." && $file != "..") {
+	            unlink($csv_dir . $file);
+	        }
+	    }
+	    closedir($handle);
+	}
+	
+	// Excluindo arquivos dentro do diretório ./svg/manual/
+	if ($handle = opendir($manual_dir)) {
+	    while (false !== ($file = readdir($handle))) {
+	        if ($file != "." && $file != "..") {
+	            unlink($manual_dir . $file);
+	        }
+	    }
+	    closedir($handle);
+	}
+	
+	// Excluindo arquivos dentro do diretório ./svg/auto/
+	if ($handle = opendir($auto_dir)) {
+	    while (false !== ($file = readdir($handle))) {
+	        if ($file != "." && $file != "..") {
+	            unlink($auto_dir . $file);
+	        }
+	    }
+	    closedir($handle);
+      //header('Location: qr-auto.php');
+	}
+  echo "<script>alert('Registros excluidos com sucesso!');window.location.href='index.php';</script>";
+
+}
+
+?>
 <!DOCTYPE html>
 <html lang="pt">
 	<head>
 		<title>QR Code</title>
-		<meta charset="UTF-8">
+		<meta charset="UTF-8" >
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -14,53 +108,50 @@
 	<body>
 		<div class="container py-5">
 			<div class="row justify-content-center">
-				<div class="col-md-8">
+				<div class="col-md-18">
 					<div class="card border-0 shadow">
 						<div class="card-body p-4">
-							<h2 class="mb-4 text-center">Consultar Registros</h2>
-							<p style="text-align:justify">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                            It has survived not only five centuries, but also the leap into electronic typesetting, 
-                            remaining essentially unchanged. It was popularised in the 1960s with the release of 
-                            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                             software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>    
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th scope="col">Nome</th>
-										<th scope="col">Sobrenome</th>
-										<th scope="col">E-mail</th>
-										<th scope="col">QR Code</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>Mark</td>
-										<td>Otto</td>
-										<td>mark.o@mdo.com.br</td>
-										<td>Icon</td>
-									</tr>
-									<tr>
-										<td>Jacob</td>
-										<td>Thornton</td>
-										<td>jacob.t@mdo.com.br</td>
-										<td>Icon</td>
-									</tr>
-									<tr>
-										<td>Larry</td>
-										<td>Bird</td>
-										<td>mark.o@mdo.com.br</td>
-										<td>Icon</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+							<h2 class="mb-4 text-center">QR Codes gerados</h2>
+                <form action="consultar-registros.php" method="post">  
+                  <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nome</th>
+                          <th scope="col">Cargo</th>
+                          <th scope="col">Departamento</th>
+                          <th scope="col">E-mail</th>
+                          <th scope="col">Celular</th>
+                          <th scope="col">Ramal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <?php foreach ($dados as $dado) { ?>
+                              <tr>
+                                  <td><?php echo $dado['DisplayName']; ?></td>
+                                  <td><?php echo $dado['Title']; ?></td>
+                                  <td><?php echo $dado['Department']; ?></td>
+                                  <td><?php echo $dado['Mail']; ?></td>
+                                  <td><?php echo $dado['Mobile']; ?></td>
+                                  <td><?php echo $dado['TelephoneNumber']; ?></td>
+                              </tr>
+                          <?php } ?>
+                      </tbody>
+                  </table>
+                  <div class="d-flex justify-content-center">
+                  <button type="submit"  style="margin-left: 10px;" name="download-qr" class="btn btn-success shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path></svg>
+                    DOWNLOAD
+                  </button> <br>
+                  <button type="submit" style="margin-left: 10px;" name="apagar-registros" class="btn btn-danger shadow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"></path></svg>
+                    APAGAR REGISTROS
+                  </button>
+                  </div>
+                </form>
+              </div>            
+            </div>
 					</div>
 				</div>
 			</div>
 	</body>
 </html>
+
 
