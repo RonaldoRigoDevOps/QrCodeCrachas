@@ -7,16 +7,19 @@ use chillerlan\QRCode\Output\QROutputInterface;
 
 include './vendor/autoload.php';
 
-if (isset($_POST['gerar-qr']))
-{
+include 'functions.php';
 
-    $fullname     = $_POST['nome_completo'];
-    $numberMobile = $_POST['celular'];
-    $numberWork   = $_POST['telefone'];
+if (isset($_POST['gerar-qr']))
+{   
+
+    //$fullname     = $_POST['nome_completo'];
+    $fullname     = formatText($_POST['nome_completo']);
+    $numberMobile = formatPhoneNumber($_POST['celular']);
+    $numberWork   = formatPhoneNumberWork($_POST['telefone']);
     $numberRamal  = $_POST['ramal'];
-    $designation  = $_POST['cargo'];
-    $department   = $_POST['departamento'];
-    $email        = $_POST['email'];
+    $designation  = formatText($_POST['cargo']);
+    $department   = formatText($_POST['departamento']);
+    $email        = formatTextLowercase($_POST['email']);
     $company      = $_POST['empresa'];
     $neighborhood = $_POST['bairro'];
     $street       = $_POST['rua'];

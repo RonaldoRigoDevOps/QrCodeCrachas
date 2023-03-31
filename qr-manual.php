@@ -1,5 +1,11 @@
 <?php
 	include("environment.php");
+
+	function formatName($name) {
+		$formattedName = ucwords(strtolower($name));
+		return $formattedName;
+	}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -21,24 +27,26 @@
 					<div class="card border-0 shadow">
 						<div class="card-body p-4">
 							<h2 class="mb-4 text-center">Gerar QR Code</h2>
+							<p class="text-center">Preencha os campos conforme os exemplos.</p>
 							<form action="gerar-qr-manual.php" method="post" class="validate-form">
 								<div class="row">
 									<div class="col-md-12">
 										<div class="form-group mb-3 validate-input">
 											<label for="nome" class="form-label">Nome completo</label>
-											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="nome_completo" placeholder="" required>
+											<label for="nome" class="form-label"></label>
+											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="nome_completo" placeholder="Ex: Fulano da Silva" required>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group mb-3 validate-input">
 											<label for="cargo" class="form-label">Cargo</label>
-											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="cargo" placeholder="" required>
+											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="cargo" placeholder="Ex: Assistente Administrativo" required>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group mb-3 validate-input">
 											<label for="cargo" class="form-label">Departamento</label>
-											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="departamento" placeholder="" required>
+											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="departamento" placeholder="Ex: Administrativo" required>
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -50,74 +58,74 @@
 									<div class="col-md-4">
 										<div class="form-group mb-3 validate-input">
 											<label for="telefone" class="form-label">Celular</label>
-											<input type="tel" class="form-control form-control-lg border-0 shadow-sm bg-light" name="celular" placeholder="+55 x xxxxx xxxx " >
+											<input type="tel" class="form-control form-control-lg border-0 shadow-sm bg-light" name="celular" placeholder="DD xxxxx xxxx " >
 										</div>
 									</div>
 									<div class="col-md-2">
 											<div class="form-group mb-3 validate-input">
 												<label for="numero" class="form-label">Ramal</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="ramal" value="" placeholder="" >
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="ramal" value="" placeholder="xxxx" >
 											</div>
 										</div>
 									<div class="col-md-12">
 										<div class="form-group mb-3 validate-input">
 											<label for="empresa" class="form-label">Empresa</label>
-											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="empresa" value="<?php echo"$company"?>" placeholder="" required>
+											<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="empresa" value="<?php echo"$company"?>" placeholder="" required readonly >
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-md-6">
 											<div class="form-group mb-3 validate-input">
 												<label for="rua" class="form-label">Rua</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="rua" value="<?php echo"$street"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="rua" value="<?php echo"$street"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-2">
 											<div class="form-group mb-3 validate-input">
 												<label for="numero" class="form-label">Número</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="numero" value="<?php echo"$number"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="numero" value="<?php echo"$number"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-4">
 											<div class="form-group mb-3 validate-input">
 												<label for="bairro" class="form-label">Bairro</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="bairro" value="<?php echo"$neighborhood"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="bairro" value="<?php echo"$neighborhood"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-4">
 											<div class="form-group mb-3 validate-input">
 												<label for="cidade" class="form-label">Cidade</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="cidade" value="<?php echo"$city"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="cidade" value="<?php echo"$city"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-4">
 											<div class="form-group mb-3 validate-input">
 												<label for="estado" class="form-label">Estado</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="estado" value="<?php echo"$state"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="estado" value="<?php echo"$state"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-4">
 											<div class="form-group mb-3 validate-input">
 												<label for="pais" class="form-label">País</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="pais" value="<?php echo"$country"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="pais" value="<?php echo"$country"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-3">
 											<div class="form-group mb-3 validate-input">
 												<label for="site" class="form-label">CEP</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="cep" value="<?php echo"$postalcode"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="cep" value="<?php echo"$postalcode"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-5">
 											<div class="form-group mb-3 validate-input">
 												<label for="site" class="form-label">Site</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="site" value="<?php echo"$website"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="site" value="<?php echo"$website"?>" placeholder="" required readonly>
 											</div>
 										</div>
 										<div class="col-md-4">
 											<div class="form-group mb-3 validate-input">
 												<label for="pais" class="form-label">Telefone</label>
-												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="telefone" value="<?php echo"$numberWork"?>" placeholder="" required>
+												<input type="text" class="form-control form-control-lg border-0 shadow-sm bg-light" name="telefone" value="<?php echo"$numberWork"?>" placeholder="" required readonly>
 											</div>
 										</div>
 									</div>
