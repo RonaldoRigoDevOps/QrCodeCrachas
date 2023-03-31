@@ -32,7 +32,7 @@ foreach ($dados as $dado) {
     $data .= "FN:$fullname\r\n";
     $data .= "N:$fullname\r\n";
     $data .= "EMAIL;TYPE=WORK:$email\r\n";
-    $data .= "TEL;TYPE=WORK:$numberWork\r\n";
+    $data .= "TEL;TYPE=WORK:$numberWork2\r\n";
     $data .= "TEL;TYPE=CELL:$numberMobile\r\n";
     $data .= "TEL;TYPE=Ramal:$numberRamal\r\n";
     $data .= "ADR;TYPE=WORK:;$neighborhood;$street,$number;$city;$state;$postalcode;$country\r\n";

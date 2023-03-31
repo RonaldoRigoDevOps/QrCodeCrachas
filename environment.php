@@ -1,6 +1,7 @@
 <?php
 
 $numberWork   = "54 2107 1300";
+$numberWork2  = "+55 54 2107 1300";
 $company      = "Cercena S/A";
 $number       = "361"; 
 $street       = "Rua Salomão Ioschpe";
